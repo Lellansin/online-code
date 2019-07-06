@@ -89,7 +89,7 @@ client.request = function(method, path, query, body, headers = {}, opts = {}) {
   // 使用 axios 替换 httpx
   return axios
     .request({
-      url,
+      url: url.replace('http:', 'https:'),
       method,
       timeout: this.timeout,
       headers,
