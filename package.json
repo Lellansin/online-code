@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel index.html",
-    "build": "sh build_workers.sh",
+    "build": "sh build.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "gh-pages": "^2.0.1"
+    "gh-pages": "^2.0.1",
+    "parcel-bundler": "^1.12.3"
   }
 }
