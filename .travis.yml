@@ -5,4 +5,4 @@ install:
   - npm i
 script:
   - npm run build
-  - node scripts/deploy.js
+  #- node scripts/deploy.js
