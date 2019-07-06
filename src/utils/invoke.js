@@ -4,15 +4,14 @@
  */
 'use strict';
 
-const kitx = require('kitx');
-const Axios = require('axios');
-const FCClient = require('@alicloud/fc2');
-const querystring = require('querystring');
+import { md5 } from 'kitx';
+import { create } from 'axios';
+import FCClient from '@alicloud/fc2';
 
 const uid = '1834461034413514';
 const ak = 'LTAI3ejqZgZdHizv';
 const sk = 'Vx5HIIcPio3E87HhX4ZVCBZGWtcz46';
-const axios = Axios.create();
+const axios = create();
 
 const client = new FCClient(uid, {
   accessKeyID: ak,
@@ -60,10 +59,9 @@ client.request = function(method, path, query, body, headers = {}, opts = {}) {
       buff = new Buffer(JSON.stringify(body), 'utf8');
       headers['content-type'] = 'application/json';
     }
-    const digest = kitx.md5(buff, 'hex');
-    const md5 = new Buffer(digest, 'utf8').toString('base64');
+    const digest = md5(buff, 'hex');
     headers['content-length'] = buff.length;
-    headers['content-md5'] = md5;
+    headers['content-md5'] = new Buffer(digest, 'utf8').toString('base64');
     postBody = buff;
   }
 
