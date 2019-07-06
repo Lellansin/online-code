@@ -29,9 +29,9 @@ var serviceName = 'online-judge';
  * @param {{ [key: string]: string }={}} headers
  * @returns { Promise<T> }
  */
-module.exports = (name, event, headers = {}) => {
+export default function(name, event, headers = {}) {
   return client.invokeFunction(serviceName, name, event, headers);
-};
+}
 
 /**
  * 兼容浏览器端请求
