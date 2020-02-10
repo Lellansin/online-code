@@ -5,10 +5,15 @@ import invoke from './utils/invoke';
 import * as monaco from 'monaco-editor';
 
 const funcName = 'compile-and-run';
-const DEFAULT_CODE = `#include <stdio.h>\n
+const DEFAULT_CODE = `/**
+ * 标题: C 语言 Hello world
+ * 时间: ${getTimeNow()}
+ */
+#include <stdio.h>
+
 int main() {
-  printf("Hello, world!");
-  return 0;
+ printf("Hello, world!");
+ return 0;
 }\n`;
 
 // @ts-ignore
@@ -33,7 +38,8 @@ self.MonacoEnvironment = {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { code: DEFAULT_CODE };
+    const code = decodeURIComponent(location.hash.slice(1));
+    this.state = { code: code || DEFAULT_CODE, href: '' };
   }
 
   invoke(code) {
@@ -72,6 +78,10 @@ class App extends React.Component {
         readOnly: false,
         theme: 'vs-dark',
       });
+
+      this.editor.onDidChangeModelContent((e) => {
+        this.updateUrl();
+      });
     });
     const style = {
       height: window.screen.availHeight - 30,
@@ -80,11 +90,35 @@ class App extends React.Component {
     return (
       <div>
         <header style={{ backgroundColor: '#24292d', height: 30 }}>
-          <button onClick={this.click.bind(this)}>Run</button>
+          <button onClick={this.click.bind(this)}>运行</button>
         </header>
         <div id="editor" style={style} />
       </div>
     );
+  }
+
+  updateUrl() {
+    const code = this.editor.getValue();
+    location.hash = '#' + encodeURIComponent(code);
+    // TODO 根据注释的标题来设置 document.title
+  }
+}
+
+function getTimeNow() {
+  const d = new Date();
+  try {
+    return `${d.getYear() + 1900}年${d.getMonth() + 1}月${d.getDate()}日 ${d
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${d
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}:${d
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}`;
+  } catch (_) {
+    return d.toString();
   }
 }
 
